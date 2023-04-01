@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import logo from './assets/sparky-dash-high-five.gif';
-import { getFirebaseToken, onForegroundMessage } from './firebase';
+import { getFirebaseToken, onForegroundMessage, signInWithGoogle } from './firebase';
 
 export default function App() {
   const [showNotificationBanner, setShowNotificationBanner] = useState(Notification.permission === 'default');
@@ -27,6 +27,16 @@ export default function App() {
       })
       .catch((err) => console.error('An error occured while retrieving firebase token. ', err))
   }
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle()
+      .then((result) => {
+        console.log('Google sign in result: ', result);
+        console.log('Access token: ', result.user.accessToken);
+      })
+      .catch((err) => console.error('An error occured while signing in with Google. ', err))
+  }
+
 
   const ToastifyNotification = ({ title, body }) => (
     <div className="push-notification">
@@ -55,6 +65,13 @@ export default function App() {
         onClick={() => toast(<ToastifyNotification title="New Message" body="Hi there!" />)}
       >
         Show toast notification
+      </button>
+      <span className="app-divider">or</span>
+      <button
+        className="btn-primary"
+        onClick={handleSignInWithGoogle}
+      >
+        Sign in with Google
       </button>
 
       <ToastContainer hideProgressBar />

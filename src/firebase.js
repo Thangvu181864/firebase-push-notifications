@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getToken, getMessaging, onMessage } from 'firebase/messaging';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,6 +16,8 @@ console.log('*** Firebase Config ***', firebaseConfig)
 
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
 
 export const getOrRegisterServiceWorker = () => {
   if ('serviceWorker' in navigator) {
@@ -37,3 +40,5 @@ export const getFirebaseToken = () =>
 
 export const onForegroundMessage = () =>
   new Promise((resolve) => onMessage(messaging, (payload) => resolve(payload)));
+
+export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
