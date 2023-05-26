@@ -22,6 +22,7 @@ export default function App() {
       .then((firebaseToken) => {
         console.log('Firebase token: ', firebaseToken);
         if (firebaseToken) {
+          toast(<ToastifyNotification title="Permission granted" body="You can now receive push notifications." />);
           setShowNotificationBanner(false);
         }
       })
@@ -33,6 +34,7 @@ export default function App() {
       .then((result) => {
         console.log('Google sign in result: ', result);
         console.log('Access token: ', result.user.accessToken);
+        toast(<ToastifyNotification title="Sign in successful" body="You are now signed in with Google." />);
       })
       .catch((err) => console.error('An error occured while signing in with Google. ', err))
   }
@@ -62,9 +64,9 @@ export default function App() {
 
       <button
         className="btn-primary"
-        onClick={() => toast(<ToastifyNotification title="New Message" body="Hi there!" />)}
+        onClick={handleGetFirebaseToken}
       >
-        Show toast notification
+        Get Firebase Token
       </button>
       <span className="app-divider">or</span>
       <button
